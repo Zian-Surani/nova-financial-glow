@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Shield, TrendingUp, Zap } from "lucide-react";
+import { ArrowRight, Sparkles, Shield, TrendingUp, Zap, Mail, Phone, MapPin, Github, Linkedin } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Landing = () => {
   return (
@@ -26,19 +27,20 @@ const Landing = () => {
             </div>
             
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#" className="text-foreground/80 hover:text-foreground transition-smooth">Home</a>
-              <a href="#" className="text-foreground/80 hover:text-foreground transition-smooth">Personal</a>
-              <a href="#" className="text-foreground/80 hover:text-foreground transition-smooth">Business</a>
+              <Link to="/" className="text-foreground/80 hover:text-foreground transition-smooth hover:scale-105 transform">Home</Link>
+              <Link to="/personal" className="text-foreground/80 hover:text-foreground transition-smooth hover:scale-105 transform">Personal</Link>
+              <Link to="/public" className="text-foreground/80 hover:text-foreground transition-smooth hover:scale-105 transform">Business</Link>
             </div>
 
             <div className="flex items-center space-x-4">
+              <ThemeToggle />
               <Link to="/login">
-                <Button variant="ghost" className="text-foreground">
+                <Button variant="ghost" className="text-foreground hover:scale-105 transform transition-all">
                   Log in
                 </Button>
               </Link>
-              <Link to="/dashboard">
-                <Button variant="premium" className="px-6">
+              <Link to="/personal">
+                <Button variant="premium" className="px-6 hover:scale-105 transform transition-all shadow-lg hover:shadow-glow">
                   Sign up
                 </Button>
               </Link>
@@ -79,8 +81,8 @@ const Landing = () => {
                 A new era of
               </span>
               <br />
-              <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-                personal finance
+              <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-blue-500 bg-clip-text text-transparent animate-pulse">
+                wealth management
               </span>
             </h1>
             
@@ -90,14 +92,14 @@ const Landing = () => {
           </div>
 
           <div className="flex justify-center">
-            <Link to="/dashboard">
+            <Link to="/personal">
               <Button 
                 variant="premium" 
                 size="lg" 
-                className="px-12 py-6 text-lg font-semibold group"
+                className="px-12 py-6 text-lg font-semibold group hover:scale-110 transform transition-all duration-300 shadow-2xl hover:shadow-glow animate-pulse"
               >
-                Join waitlist
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                Go Financing
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-all duration-300" />
               </Button>
             </Link>
           </div>
@@ -129,7 +131,161 @@ const Landing = () => {
             <p className="text-muted-foreground">Lightning-fast money transfers with zero fees and real-time notifications.</p>
           </div>
         </div>
+
+        {/* Contact & About Section */}
+        <section id="contact" className="mt-32 mb-20">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">Get in Touch</h2>
+            <p className="text-muted-foreground text-lg">Ready to transform your financial future?</p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-12">
+            {/* About Us */}
+            <div className="glass rounded-3xl p-8 hover:shadow-glow transition-all duration-500">
+              <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">About FINEO</h3>
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                FINEO is revolutionizing personal finance with AI-powered insights, blockchain security, and real-time market analysis. 
+                Our platform empowers individuals to make smarter financial decisions and achieve their wealth management goals.
+              </p>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <Shield className="w-5 h-5 text-success" />
+                  <span>Bank-grade security with blockchain verification</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <TrendingUp className="w-5 h-5 text-success" />
+                  <span>AI-powered investment recommendations</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Zap className="w-5 h-5 text-success" />
+                  <span>Real-time portfolio tracking and alerts</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Info */}
+            <div className="glass rounded-3xl p-8 hover:shadow-glow transition-all duration-500">
+              <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Contact Us</h3>
+              <div className="space-y-6">
+                <div className="flex items-center space-x-4 hover:scale-105 transform transition-all">
+                  <div className="w-10 h-10 gradient-premium rounded-lg flex items-center justify-center">
+                    <Mail className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-medium">Email</p>
+                    <p className="text-muted-foreground">contact@fineo.ai</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-4 hover:scale-105 transform transition-all">
+                  <div className="w-10 h-10 gradient-growth rounded-lg flex items-center justify-center">
+                    <Phone className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-medium">Phone</p>
+                    <p className="text-muted-foreground">+91 98765 43210</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-4 hover:scale-105 transform transition-all">
+                  <div className="w-10 h-10 gradient-risk rounded-lg flex items-center justify-center">
+                    <MapPin className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-medium">Address</p>
+                    <p className="text-muted-foreground">Mumbai, India</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="mt-8 pt-6 border-t border-border/30">
+                <Link to="/personal">
+                  <Button variant="premium" className="w-full hover:scale-105 transform transition-all shadow-lg hover:shadow-glow">
+                    Start Your Journey
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
+
+      {/* Professional Footer */}
+      <footer className="relative z-10 bg-background/80 backdrop-blur-sm border-t border-border/30">
+        <div className="max-w-7xl mx-auto px-6 py-12">
+          <div className="grid md:grid-cols-4 gap-8">
+            {/* Brand */}
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 gradient-premium rounded-lg flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-xl font-bold">FINEO</span>
+              </div>
+              <p className="text-muted-foreground text-sm">
+                Empowering financial freedom through intelligent technology and transparent blockchain solutions.
+              </p>
+            </div>
+
+            {/* Product */}
+            <div>
+              <h4 className="font-semibold mb-4">Product</h4>
+              <div className="space-y-3 text-sm text-muted-foreground">
+                <Link to="/personal" className="block hover:text-foreground transition-smooth">Personal Dashboard</Link>
+                <Link to="/portfolio" className="block hover:text-foreground transition-smooth">Portfolio Tracking</Link>
+                <Link to="/insights" className="block hover:text-foreground transition-smooth">AI Insights</Link>
+                <Link to="/loans" className="block hover:text-foreground transition-smooth">Loan Management</Link>
+              </div>
+            </div>
+
+            {/* Company */}
+            <div>
+              <h4 className="font-semibold mb-4">Company</h4>
+              <div className="space-y-3 text-sm text-muted-foreground">
+                <a href="#" className="block hover:text-foreground transition-smooth">About Us</a>
+                <a href="#" className="block hover:text-foreground transition-smooth">Careers</a>
+                <a href="#" className="block hover:text-foreground transition-smooth">Press</a>
+                <a href="#contact" className="block hover:text-foreground transition-smooth">Contact</a>
+              </div>
+            </div>
+
+            {/* Developer */}
+            <div>
+              <h4 className="font-semibold mb-4">Developer</h4>
+              <div className="glass rounded-lg p-4 space-y-3">
+                <div className="flex items-center space-x-2">
+                  <div className="w-6 h-6 gradient-premium rounded-full flex items-center justify-center">
+                    <span className="text-xs font-bold text-white">D</span>
+                  </div>
+                  <span className="text-sm font-medium">Dev Team</span>
+                </div>
+                <div className="flex space-x-2">
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:scale-110 transform transition-all">
+                    <Github className="h-4 w-4" />
+                  </Button>
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:scale-110 transform transition-all">
+                    <Linkedin className="h-4 w-4" />
+                  </Button>
+                  <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:scale-110 transform transition-all">
+                    <Mail className="h-4 w-4" />
+                  </Button>
+                </div>
+                <p className="text-xs text-muted-foreground">Built with ❤️ in India</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-border/30 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
+            <p>&copy; 2024 FINEO. All rights reserved.</p>
+            <div className="flex space-x-6 mt-4 md:mt-0">
+              <a href="#" className="hover:text-foreground transition-smooth">Privacy Policy</a>
+              <a href="#" className="hover:text-foreground transition-smooth">Terms of Service</a>
+              <a href="#" className="hover:text-foreground transition-smooth">Cookie Policy</a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

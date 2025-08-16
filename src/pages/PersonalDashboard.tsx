@@ -10,7 +10,7 @@ import { CashflowCard } from "@/components/dashboard/CashflowCard";
 import { InsightsCard } from "@/components/dashboard/InsightsCard";
 import { MandatesCard } from "@/components/dashboard/MandatesCard";
 import { GamificationBadges } from "@/components/dashboard/GamificationBadges";
-import { CustomizableWidget, DashboardCustomizer } from "@/components/dashboard/CustomizableWidget";
+import { DashboardCustomizer } from "@/components/dashboard/DashboardCustomizer";
 import { Footer } from "@/components/Footer";
 import { Share2, Lock, Globe, Copy, Star, Award } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -22,6 +22,7 @@ interface Widget {
   size: 'small' | 'medium' | 'large';
   visible: boolean;
   order: number;
+  description: string;
   component: React.ReactNode;
 }
 
@@ -38,6 +39,7 @@ const PersonalDashboard = () => {
       size: 'medium',
       visible: true,
       order: 1,
+      description: 'Your credit score and financial health rating',
       component: <FairScoreCard />
     },
     {
@@ -47,6 +49,7 @@ const PersonalDashboard = () => {
       size: 'medium',
       visible: true,
       order: 2,
+      description: 'Asset allocation and portfolio performance overview',
       component: <PortfolioCard />
     },
     {
@@ -56,6 +59,7 @@ const PersonalDashboard = () => {
       size: 'medium',
       visible: true,
       order: 3,
+      description: '90-day cashflow forecast and trends',
       component: <CashflowCard />
     },
     {
@@ -65,6 +69,7 @@ const PersonalDashboard = () => {
       size: 'large',
       visible: true,
       order: 4,
+      description: 'Financial achievement badges and progress',
       component: (
         <Card className="glass border-0">
           <CardHeader>
@@ -86,6 +91,7 @@ const PersonalDashboard = () => {
       size: 'medium',
       visible: true,
       order: 5,
+      description: 'AI-powered financial recommendations',
       component: <InsightsCard />
     },
     {
@@ -95,6 +101,7 @@ const PersonalDashboard = () => {
       size: 'medium',
       visible: true,
       order: 6,
+      description: 'EMI and recurring payment tracking',
       component: <MandatesCard />
     }
   ]);
@@ -195,8 +202,6 @@ const PersonalDashboard = () => {
             {/* Dashboard Customizer */}
             <DashboardCustomizer
               widgets={widgets}
-              isEditing={isEditing}
-              onToggleEdit={handleToggleEdit}
               onToggleVisibility={handleToggleVisibility}
               onSaveLayout={handleSaveLayout}
             />
@@ -210,12 +215,9 @@ const PersonalDashboard = () => {
               
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {visibleWidgets.slice(0, 3).map((widget) => (
-                  <CustomizableWidget
-                    key={widget.id}
-                    widget={widget}
-                    isEditing={isEditing}
-                    onToggleVisibility={handleToggleVisibility}
-                  />
+                  <div key={widget.id} className="animate-fade-in">
+                    {widget.component}
+                  </div>
                 ))}
               </div>
             </div>
@@ -229,12 +231,9 @@ const PersonalDashboard = () => {
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {visibleWidgets.slice(3).map((widget) => (
-                  <CustomizableWidget
-                    key={widget.id}
-                    widget={widget}
-                    isEditing={isEditing}
-                    onToggleVisibility={handleToggleVisibility}
-                  />
+                  <div key={widget.id} className="animate-fade-in">
+                    {widget.component}
+                  </div>
                 ))}
               </div>
             </div>

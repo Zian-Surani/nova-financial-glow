@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, Github, ArrowLeft, Users, Sparkles } from "lucide-react";
+import { Eye, EyeOff, Github, ArrowLeft, Users, Sparkles, TrendingUp, Shield, Zap } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,17 +23,20 @@ const Login = () => {
         <div className="flex-1 flex items-center justify-center p-8">
           <div className="w-full max-w-md space-y-8">
             {/* Back to Home */}
-            <Link to="/" className="inline-flex items-center text-muted-foreground hover:text-foreground transition-smooth">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to home
-            </Link>
+            <div className="flex items-center justify-between w-full">
+              <Link to="/" className="inline-flex items-center text-muted-foreground hover:text-foreground transition-smooth hover:scale-105 transform">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to home
+              </Link>
+              <ThemeToggle />
+            </div>
 
             {/* Logo */}
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 gradient-premium rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 gradient-premium rounded-lg flex items-center justify-center animate-pulse">
                 <Sparkles className="w-5 h-5 text-white" />
               </div>
-              <span className="text-2xl font-bold">Arcana</span>
+              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">FINEO</span>
             </div>
 
             {/* Login Card */}
@@ -85,8 +89,8 @@ const Login = () => {
                   </div>
                 </div>
 
-                <Link to="/dashboard">
-                  <Button className="w-full gradient-premium text-white border-0 hover:opacity-90 py-6">
+                <Link to="/personal">
+                  <Button className="w-full gradient-premium text-white border-0 hover:opacity-90 hover:scale-105 transform transition-all py-6 shadow-lg hover:shadow-glow">
                     Sign in
                   </Button>
                 </Link>
@@ -131,44 +135,63 @@ const Login = () => {
 
         {/* Right Side - Welcome Card */}
         <div className="hidden lg:flex flex-1 items-center justify-center p-8">
-          <Card className="glass border-0 shadow-2xl w-full max-w-md">
+          <Card className="glass border-0 shadow-2xl w-full max-w-md animate-fade-in">
             <CardContent className="p-8 text-center space-y-6">
-              <div className="w-24 h-24 gradient-premium rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <span className="text-white text-3xl font-bold">A</span>
+              <div className="w-24 h-24 gradient-premium rounded-2xl flex items-center justify-center mx-auto mb-6 animate-bounce">
+                <span className="text-white text-3xl font-bold">F</span>
               </div>
               
               <div className="space-y-4">
-                <h2 className="text-3xl font-bold text-white">Welcome to Arcana</h2>
-                <p className="text-white/80 leading-relaxed">
-                  Arcana helps developers to build organized and well-coded dashboards full of beautiful and rich modules. Join us and start building your application today.
+                <h2 className="text-3xl font-bold text-foreground">Welcome to FINEO</h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  FINEO empowers you with AI-driven financial insights, portfolio tracking, and secure blockchain verification. 
+                  Transform your financial future with intelligent wealth management.
                 </p>
-                <p className="text-white/60">
-                  More than 17k people joined us, it's your turn
+                <p className="text-muted-foreground/80">
+                  Join thousands of users building wealth smarter
                 </p>
               </div>
 
-              <Card className="glass border-border/20 bg-white/5">
+              <div className="grid grid-cols-3 gap-4 mt-8">
+                <div className="glass rounded-xl p-4 hover:scale-110 transform transition-all">
+                  <TrendingUp className="w-8 h-8 gradient-growth rounded-lg p-1 mx-auto mb-2" />
+                  <p className="text-xs font-medium">Smart Investing</p>
+                </div>
+                <div className="glass rounded-xl p-4 hover:scale-110 transform transition-all">
+                  <Shield className="w-8 h-8 gradient-premium rounded-lg p-1 mx-auto mb-2" />
+                  <p className="text-xs font-medium">Secure Banking</p>
+                </div>
+                <div className="glass rounded-xl p-4 hover:scale-110 transform transition-all">
+                  <Zap className="w-8 h-8 gradient-risk rounded-lg p-1 mx-auto mb-2" />
+                  <p className="text-xs font-medium">Real-time Analytics</p>
+                </div>
+              </div>
+
+              <Card className="glass border-border/20 bg-card/50">
                 <CardContent className="p-6">
                   <div className="flex items-start space-x-4">
                     <div className="flex-1">
-                      <h3 className="text-white font-semibold mb-2">
-                        Get your right job and right place apply now
+                      <h3 className="text-foreground font-semibold mb-2">
+                        Start Your Wealth Journey Today
                       </h3>
-                      <p className="text-white/70 text-sm mb-4">
-                        Be among the first founders to experience the easiest way to start and run a business.
+                      <p className="text-muted-foreground text-sm mb-4">
+                        Join the future of personal finance with AI-powered insights and blockchain security.
                       </p>
                     </div>
                   </div>
                   
-                  <div className="flex -space-x-2">
+                  <div className="flex -space-x-2 justify-center">
                     {[1, 2, 3, 4].map((i) => (
                       <div
                         key={i}
-                        className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-accent border-2 border-white flex items-center justify-center"
+                        className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-accent border-2 border-background flex items-center justify-center hover:scale-110 transform transition-all"
                       >
                         <Users className="w-4 h-4 text-white" />
                       </div>
                     ))}
+                    <div className="w-8 h-8 rounded-full bg-muted border-2 border-background flex items-center justify-center text-xs font-bold">
+                      +5K
+                    </div>
                   </div>
                 </CardContent>
               </Card>

@@ -1,14 +1,33 @@
-import { Calendar, Bell, Search } from "lucide-react";
+import { Calendar, Search, Home, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "../ThemeToggle";
+import { NotificationCenter } from "./NotificationCenter";
+import { Link, useLocation } from "react-router-dom";
 
 export function Header() {
+  const location = useLocation();
+  const isSubPage = !['/personal', '/dashboard'].includes(location.pathname);
+  
   return (
     <header className="h-16 border-b border-border/50 bg-background/80 backdrop-blur-sm">
       <div className="flex items-center justify-between h-full px-6">
         {/* Left section */}
         <div className="flex items-center space-x-4">
+          {isSubPage && (
+            <Link to="/personal">
+              <Button variant="ghost" size="sm" className="hover:scale-110 transform transition-all">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Dashboard
+              </Button>
+            </Link>
+          )}
+          <Link to="/" className="hover:scale-105 transform transition-all">
+            <Button variant="ghost" size="sm">
+              <Home className="h-4 w-4 mr-2" />
+              Home
+            </Button>
+          </Link>
           <div>
             <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
             <p className="text-sm text-muted-foreground">Welcome back, John</p>
@@ -33,10 +52,7 @@ export function Header() {
             Last 30 days
           </Button>
           <ThemeToggle />
-          <Button variant="ghost" size="sm" className="relative">
-            <Bell className="h-5 w-5" />
-            <span className="absolute -top-1 -right-1 h-3 w-3 bg-warning rounded-full"></span>
-          </Button>
+          <NotificationCenter />
           
           {/* Quick stats */}
           <div className="flex space-x-6 pl-6 border-l border-border/50">
