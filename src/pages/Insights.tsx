@@ -1,11 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Brain, TrendingUp, AlertTriangle, Lightbulb, Target, Zap } from "lucide-react";
+import { Brain, TrendingUp, AlertTriangle, Lightbulb, Target, Zap, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Sidebar } from "@/components/dashboard/Sidebar";
+import { Header } from "@/components/dashboard/Header";
 
 const Insights = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10 p-6">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="flex min-h-screen w-full">
+      <Sidebar />
+      <div className="flex-1 flex flex-col ml-64">
+        <Header />
+        <main className="flex-1 p-6 bg-gradient-to-br from-background via-primary/5 to-accent/10">
+          <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
         {/* Header */}
         <div className="glass rounded-3xl p-6">
           <div className="flex items-center justify-between">
@@ -273,6 +280,8 @@ const Insights = () => {
             </div>
           </CardContent>
         </Card>
+          </div>
+        </main>
       </div>
     </div>
   );

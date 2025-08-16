@@ -23,7 +23,7 @@ export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className={`${isCollapsed ? 'w-20' : 'w-64'} h-screen bg-card border-r border-border/50 transition-smooth flex flex-col`}>
+    <div className={`${isCollapsed ? 'w-20' : 'w-64'} h-screen bg-card border-r border-border/50 transition-smooth flex flex-col fixed left-0 top-0 z-50`}>
       {/* Header */}
       <div className="p-6 border-b border-border/50">
         <div className="flex items-center justify-between">

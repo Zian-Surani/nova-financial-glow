@@ -1,13 +1,22 @@
-import { Calendar, Search, Home, ArrowLeft } from "lucide-react";
+import { Calendar, Search, Home, ArrowLeft, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "../ThemeToggle";
 import { NotificationCenter } from "./NotificationCenter";
 import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 
 export function Header() {
   const location = useLocation();
   const isSubPage = !['/personal', '/dashboard'].includes(location.pathname);
+  const [dateRange, setDateRange] = useState("Last 30 days");
+  
+  const handleDateRangeChange = () => {
+    const ranges = ["Last 7 days", "Last 30 days", "Last 90 days", "Last 6 months", "Last year"];
+    const currentIndex = ranges.indexOf(dateRange);
+    const nextIndex = (currentIndex + 1) % ranges.length;
+    setDateRange(ranges[nextIndex]);
+  };
   
   return (
     <header className="h-16 border-b border-border/50 bg-background/80 backdrop-blur-sm">
@@ -47,9 +56,15 @@ export function Header() {
 
         {/* Right section */}
         <div className="flex items-center space-x-4">
-          <Button variant="outline" size="sm" className="text-sm">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="text-sm hover-scale transition-smooth" 
+            onClick={handleDateRangeChange}
+          >
             <Calendar className="h-4 w-4 mr-2" />
-            Last 30 days
+            {dateRange}
+            <ChevronDown className="h-3 w-3 ml-2" />
           </Button>
           <ThemeToggle />
           <NotificationCenter />

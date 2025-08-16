@@ -139,6 +139,17 @@ export default {
 					'50%': {
 						transform: 'translateY(-10px)'
 					}
+				},
+				'bounce-gentle': {
+					'0%, 20%, 53%, 80%, 100%': { transform: 'translateY(0)' },
+					'40%, 43%': { transform: 'translateY(-8px)' },
+					'70%': { transform: 'translateY(-4px)' },
+					'90%': { transform: 'translateY(-2px)' }
+				},
+				'elastic': {
+					'0%': { transform: 'scale(0.9) translateY(20px)', opacity: '0' },
+					'50%': { transform: 'scale(1.05) translateY(-5px)', opacity: '1' },
+					'100%': { transform: 'scale(1) translateY(0)', opacity: '1' }
 				}
 			},
 			animation: {
@@ -147,7 +158,14 @@ export default {
 				'fade-in': 'fade-in 0.4s ease-out',
 				'scale-in': 'scale-in 0.3s ease-out',
 				'slide-up': 'slide-up 0.5s ease-out',
-				'float': 'float 3s ease-in-out infinite'
+				'float': 'float 3s ease-in-out infinite',
+				'bounce-gentle': 'bounce-gentle 0.8s ease-out',
+				'elastic': 'elastic 0.6s ease-out'
+			},
+			transitionTimingFunction: {
+				'elastic': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+				'bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+				'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)'
 			}
 		}
 	},

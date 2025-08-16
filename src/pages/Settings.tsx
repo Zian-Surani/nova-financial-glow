@@ -16,13 +16,21 @@ import {
   Globe,
   Lock,
   Download,
-  Upload
+  Upload,
+  ArrowLeft
 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Sidebar } from "@/components/dashboard/Sidebar";
+import { Header } from "@/components/dashboard/Header";
 
 const Settings = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10 p-6">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <div className="flex min-h-screen w-full">
+      <Sidebar />
+      <div className="flex-1 flex flex-col ml-64">
+        <Header />
+        <main className="flex-1 p-6 bg-gradient-to-br from-background via-primary/5 to-accent/10">
+          <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
         {/* Header */}
         <div className="glass rounded-3xl p-6">
           <div className="flex items-center justify-between">
@@ -572,6 +580,8 @@ const Settings = () => {
             </Tabs>
           </CardContent>
         </Card>
+          </div>
+        </main>
       </div>
     </div>
   );
