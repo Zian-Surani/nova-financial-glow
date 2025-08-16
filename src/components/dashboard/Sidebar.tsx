@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { 
   LayoutDashboard, 
   PieChart, 
@@ -11,11 +12,11 @@ import {
 import { Button } from "@/components/ui/button";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Dashboard", active: true },
-  { icon: PieChart, label: "Portfolio", active: false },
-  { icon: Lightbulb, label: "Insights", active: false },
-  { icon: CreditCard, label: "Loans", active: false },
-  { icon: Settings, label: "Settings", active: false },
+  { icon: LayoutDashboard, label: "Dashboard", path: "/personal" },
+  { icon: PieChart, label: "Portfolio", path: "/portfolio" },
+  { icon: Lightbulb, label: "Insights", path: "/insights" },
+  { icon: CreditCard, label: "Loans", path: "/loans" },
+  { icon: Settings, label: "Settings", path: "/settings" },
 ];
 
 export function Sidebar() {
@@ -45,13 +46,20 @@ export function Sidebar() {
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-2">
         {menuItems.map((item, index) => (
-          <div
+          <NavLink
             key={index}
-            className={item.active ? "nav-item-active" : "nav-item"}
+            to={item.path}
+            className={({ isActive }) => 
+              `flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                isActive 
+                  ? 'bg-primary/20 text-primary shadow-glow' 
+                  : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+              }`
+            }
           >
             <item.icon className="h-5 w-5 flex-shrink-0" />
             {!isCollapsed && <span className="text-sm font-medium">{item.label}</span>}
-          </div>
+          </NavLink>
         ))}
       </nav>
 
