@@ -28,8 +28,8 @@ const Landing = () => {
             
             <div className="hidden md:flex items-center space-x-8">
               <Link to="/" className="text-foreground/80 hover:text-foreground transition-smooth hover:scale-105 transform">Home</Link>
-              <Link to="/personal" className="text-foreground/80 hover:text-foreground transition-smooth hover:scale-105 transform">Personal</Link>
-              <Link to="/public" className="text-foreground/80 hover:text-foreground transition-smooth hover:scale-105 transform">Business</Link>
+              <Link to="/login" className="text-foreground/80 hover:text-foreground transition-smooth hover:scale-105 transform">Personal</Link>
+              <Link to="/login" className="text-foreground/80 hover:text-foreground transition-smooth hover:scale-105 transform">Business</Link>
             </div>
 
             <div className="flex items-center space-x-4">

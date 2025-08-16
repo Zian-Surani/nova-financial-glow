@@ -12,6 +12,12 @@ import Loans from "./pages/Loans";
 import Settings from "./pages/Settings";
 import PublicDashboard from "./pages/PublicDashboard";
 import PersonalDashboard from "./pages/PersonalDashboard";
+import SignUp from "./pages/SignUp";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Careers from "./pages/Careers";
+import Press from "./pages/Press";
+import AllRecommendations from "./pages/AllRecommendations";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +38,12 @@ const App = () => (
           <Route path="/insights" element={<Insights />} />
           <Route path="/loans" element={<Loans />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/press" element={<Press />} />
+          <Route path="/recommendations" element={<AllRecommendations />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
