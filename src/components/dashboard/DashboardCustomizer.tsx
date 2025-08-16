@@ -49,7 +49,11 @@ export function DashboardCustomizer({
         </Button>
       </DialogTrigger>
       
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto glass border-0">
+      <DialogContent 
+        className="max-w-2xl max-h-[80vh] overflow-y-auto glass border-0 z-50" 
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onInteractOutside={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             Customize Your Dashboard

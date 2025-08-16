@@ -105,32 +105,91 @@ const Landing = () => {
           </div>
         </div>
 
-        {/* Feature Cards */}
-        <div className="grid md:grid-cols-3 gap-8 mt-24">
-          <div className="glass rounded-3xl p-8 hover:shadow-glow transition-smooth group">
-            <div className="w-12 h-12 gradient-growth rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <TrendingUp className="w-6 h-6 text-white" />
-            </div>
-            <h3 className="text-xl font-semibold mb-4">Smart Investing</h3>
-            <p className="text-muted-foreground">AI-powered portfolio management with real-time insights and automated rebalancing.</p>
+        {/* Feature Overview */}
+        <section className="mt-24">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Feature Overview
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+              Discover powerful tools designed to revolutionize your financial experience
+            </p>
           </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="glass rounded-3xl p-8 hover:shadow-glow transition-all duration-500 hover:scale-105 transform group border border-primary/20">
+              <div className="w-16 h-16 gradient-growth rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform shadow-lg">
+                <TrendingUp className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4 text-foreground">Smart Investing</h3>
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                AI-powered portfolio management with real-time insights and automated rebalancing for optimal returns.
+              </p>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 rounded-full bg-success"></div>
+                  <span>Real-time market analysis</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 rounded-full bg-success"></div>
+                  <span>Automated rebalancing</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 rounded-full bg-success"></div>
+                  <span>Risk assessment tools</span>
+                </div>
+              </div>
+            </div>
 
-          <div className="glass rounded-3xl p-8 hover:shadow-glow transition-smooth group">
-            <div className="w-12 h-12 gradient-premium rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <Shield className="w-6 h-6 text-white" />
+            <div className="glass rounded-3xl p-8 hover:shadow-glow transition-all duration-500 hover:scale-105 transform group border border-primary/20">
+              <div className="w-16 h-16 gradient-premium rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform shadow-lg">
+                <Shield className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4 text-foreground">Secure Banking</h3>
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                Bank-grade security with biometric authentication and blockchain verification for ultimate protection.
+              </p>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 rounded-full bg-success"></div>
+                  <span>Biometric authentication</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 rounded-full bg-success"></div>
+                  <span>Blockchain verification</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 rounded-full bg-success"></div>
+                  <span>End-to-end encryption</span>
+                </div>
+              </div>
             </div>
-            <h3 className="text-xl font-semibold mb-4">Secure Banking</h3>
-            <p className="text-muted-foreground">Bank-grade security with biometric authentication and blockchain verification.</p>
-          </div>
 
-          <div className="glass rounded-3xl p-8 hover:shadow-glow transition-smooth group">
-            <div className="w-12 h-12 gradient-risk rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <Zap className="w-6 h-6 text-white" />
+            <div className="glass rounded-3xl p-8 hover:shadow-glow transition-all duration-500 hover:scale-105 transform group border border-primary/20">
+              <div className="w-16 h-16 gradient-risk rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform shadow-lg">
+                <Zap className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold mb-4 text-foreground">Instant Transfers</h3>
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                Lightning-fast money transfers with zero fees and real-time notifications across all platforms.
+              </p>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 rounded-full bg-success"></div>
+                  <span>Zero transaction fees</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 rounded-full bg-success"></div>
+                  <span>Real-time notifications</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 rounded-full bg-success"></div>
+                  <span>Cross-platform sync</span>
+                </div>
+              </div>
             </div>
-            <h3 className="text-xl font-semibold mb-4">Instant Transfers</h3>
-            <p className="text-muted-foreground">Lightning-fast money transfers with zero fees and real-time notifications.</p>
           </div>
-        </div>
+        </section>
 
         {/* Contact & About Section */}
         <section id="contact" className="mt-32 mb-20">
@@ -243,10 +302,10 @@ const Landing = () => {
             <div>
               <h4 className="font-semibold mb-4">Company</h4>
               <div className="space-y-3 text-sm text-muted-foreground">
-                <a href="#" className="block hover:text-foreground transition-smooth">About Us</a>
-                <a href="#" className="block hover:text-foreground transition-smooth">Careers</a>
-                <a href="#" className="block hover:text-foreground transition-smooth">Press</a>
-                <a href="#contact" className="block hover:text-foreground transition-smooth">Contact</a>
+                <Link to="/about" className="block hover:text-foreground transition-smooth hover:scale-105 transform">About Us</Link>
+                <Link to="/careers" className="block hover:text-foreground transition-smooth hover:scale-105 transform">Careers</Link>
+                <Link to="/press" className="block hover:text-foreground transition-smooth hover:scale-105 transform">Press</Link>
+                <Link to="/contact" className="block hover:text-foreground transition-smooth hover:scale-105 transform">Contact</Link>
               </div>
             </div>
 
