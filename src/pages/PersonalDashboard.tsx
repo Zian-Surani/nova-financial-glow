@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -28,6 +28,7 @@ interface Widget {
 
 const PersonalDashboard = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
   const { toast } = useToast();
 
@@ -145,20 +146,31 @@ const PersonalDashboard = () => {
 
   const visibleWidgets = widgets.filter(widget => widget.visible);
 
+  // Listen for sidebar collapse/expand to adjust main margin on desktop
+  useEffect(() => {
+    const handler = (e: any) => {
+      if (e?.detail && typeof e.detail.collapsed === 'boolean') {
+        setSidebarCollapsed(e.detail.collapsed);
+      }
+    };
+    window.addEventListener('sidebar-collapsed' as any, handler as any);
+    return () => window.removeEventListener('sidebar-collapsed' as any, handler as any);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10">
       <div className="flex">
         <Sidebar />
         
-        <div className="flex-1 flex flex-col ml-64">
+        <div className={`flex-1 flex flex-col transition-[margin] duration-300 ${sidebarCollapsed ? 'md:ml-20' : 'md:ml-64'}`}>
           <Header />
           
-          <main className="flex-1 p-6 space-y-6">
+          <main className="flex-1 p-4 sm:p-6 space-y-6">
             {/* Profile Controls */}
-            <div className="glass rounded-3xl p-6">
-              <div className="flex items-center justify-between">
+            <div className="glass rounded-3xl p-4 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                  <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                     Personal Dashboard
                   </h1>
                   <p className="text-muted-foreground mt-2">
@@ -166,7 +178,7 @@ const PersonalDashboard = () => {
                   </p>
                 </div>
                 
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center flex-wrap gap-2 sm:gap-3">
                   <Badge 
                     variant={isPublic ? "success" : "secondary"}
                     className="px-3 py-1"

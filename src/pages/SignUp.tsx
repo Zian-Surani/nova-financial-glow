@@ -15,8 +15,10 @@ const SignUp = () => {
     lastName: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    bio: ''
   });
+  const [agreeTerms, setAgreeTerms] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -36,10 +38,10 @@ const SignUp = () => {
       </div>
 
       <div className="relative z-10 min-h-screen flex">
-        {/* Left Side - Sign Up Form */}
+     
         <div className="flex-1 flex items-center justify-center p-8">
           <div className="w-full max-w-lg space-y-8 animate-fade-in">
-            {/* Back to Home */}
+           
             <div className="flex items-center justify-between w-full">
               <Link to="/" className="inline-flex items-center text-muted-foreground hover:text-foreground transition-smooth hover:scale-105 transform">
                 <ArrowLeft className="w-4 h-4 mr-2" />
@@ -48,7 +50,7 @@ const SignUp = () => {
               <ThemeToggle />
             </div>
 
-            {/* Logo */}
+         
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 gradient-premium rounded-lg flex items-center justify-center animate-pulse">
                 <Sparkles className="w-5 h-5 text-white" />
@@ -56,7 +58,7 @@ const SignUp = () => {
               <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">FINEO</span>
             </div>
 
-            {/* Sign Up Card */}
+         
             <Card className="glass border-0 shadow-xl hover:shadow-glow transition-smooth">
               <CardHeader className="space-y-1 pb-6">
                 <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
@@ -123,6 +125,7 @@ const SignUp = () => {
                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </Button>
                     </div>
+                    <p className="text-xs text-muted-foreground">Use 8+ characters with a mix of letters, numbers, and symbols.</p>
                   </div>
 
                   <div className="space-y-2">
@@ -135,9 +138,42 @@ const SignUp = () => {
                       value={formData.confirmPassword}
                       onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
                     />
+                    {formData.confirmPassword && formData.password !== formData.confirmPassword && (
+                      <p className="text-xs text-destructive">Passwords do not match.</p>
+                    )}
                   </div>
 
-                  <Button type="submit" className="w-full glass bg-gradient-premium text-white font-semibold py-3 hover:scale-105 transform transition-all shadow-lg hover:shadow-glow">
+                  <div className="space-y-2">
+                    <Label htmlFor="bio">About You (optional)</Label>
+                    <textarea
+                      id="bio"
+                      rows={4}
+                      placeholder="Tell us a bit about your goals..."
+                      className="w-full glass border border-border/50 rounded-md px-3 py-2 text-sm outline-none focus:border-primary/50 transition-smooth"
+                      value={formData.bio}
+                      onChange={(e) => setFormData({...formData, bio: e.target.value})}
+                    />
+                    <p className="text-xs text-muted-foreground">This helps personalize your experience.</p>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <input
+                      id="terms"
+                      type="checkbox"
+                      checked={agreeTerms}
+                      onChange={(e) => setAgreeTerms(e.target.checked)}
+                      className="rounded"
+                    />
+                    <Label htmlFor="terms" className="text-sm text-muted-foreground">
+                      I agree to the <a className="text-primary underline" href="#">Terms</a> and <a className="text-primary underline" href="#">Privacy Policy</a>.
+                    </Label>
+                  </div>
+
+                  <Button
+                    type="submit"
+                    disabled={!agreeTerms || !formData.password || formData.password !== formData.confirmPassword}
+                    className="w-full glass bg-gradient-premium text-white font-semibold py-3 hover:scale-105 transform transition-all shadow-lg hover:shadow-glow disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
                     Create Account
                   </Button>
                 </form>

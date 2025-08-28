@@ -154,15 +154,15 @@ const AllRecommendations = () => {
           <Sidebar />
         </div>
         
-        <div className="flex-1 ml-64 flex flex-col">
+        <div className="flex-1 md:ml-64 flex flex-col">
           <Header />
           
-          <main className="flex-1 p-6 space-y-6">
+          <main className="flex-1 p-4 sm:p-6 space-y-6">
             {/* Header */}
-            <div className="glass rounded-3xl p-6 animate-fade-in">
-              <div className="flex items-center justify-between">
+            <div className="glass rounded-3xl p-4 sm:p-6 animate-fade-in">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                  <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                     All AI Recommendations
                   </h1>
                   <p className="text-muted-foreground mt-2">

@@ -15,11 +15,11 @@ export function Dashboard() {
         <Sidebar />
         
         {/* Main Content */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col md:ml-64">
           <Header />
           
           {/* Dashboard Content */}
-          <main className="flex-1 p-6 space-y-6">
+          <main className="flex-1 p-4 sm:p-6 space-y-6">
             {/* Top Row - Key Metrics */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <FairScoreCard />

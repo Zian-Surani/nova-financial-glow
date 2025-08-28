@@ -112,12 +112,12 @@ export function NotificationCenter() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="sm" className="relative hover:scale-110 transform transition-all">
+        <Button variant="ghost" size="sm" className="relative">
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
             <Badge 
               variant="destructive" 
-              className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs animate-pulse"
+              className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
             >
               {unreadCount}
             </Badge>
@@ -125,7 +125,7 @@ export function NotificationCenter() {
         </Button>
       </DialogTrigger>
       
-      <DialogContent className="max-w-md max-h-[80vh] glass border-0">
+      <DialogContent className="w-[92vw] sm:w-[420px] md:w-[480px] h-[70vh] flex flex-col glass no-hover-zoom border-0 overflow-hidden transform-gpu will-change-transform [contain:layout_paint] transition-none [&_*]:transition-none data-[state=open]:animate-none data-[state=closed]:animate-none motion-reduce:animate-none">
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl font-bold">Notifications</DialogTitle>
@@ -134,7 +134,7 @@ export function NotificationCenter() {
                 variant="ghost" 
                 size="sm" 
                 onClick={markAllAsRead}
-                className="text-xs hover:scale-105 transform transition-all"
+                className="text-xs"
               >
                 Mark all read
               </Button>
@@ -142,7 +142,7 @@ export function NotificationCenter() {
           </div>
         </DialogHeader>
         
-        <div className="space-y-4 mt-6 max-h-96 overflow-y-auto">
+        <div className="space-y-4 mt-6 flex-1 overflow-y-auto overflow-x-hidden pr-2 [scrollbar-gutter:stable_both-edges] overscroll-contain">
           {notifications.length === 0 ? (
             <div className="text-center py-8">
               <Bell className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
@@ -152,8 +152,8 @@ export function NotificationCenter() {
             notifications.map((notification) => (
               <Card 
                 key={notification.id}
-                className={`glass border-0 cursor-pointer hover:shadow-glow transition-all duration-300 ${
-                  !notification.read ? 'ring-2 ring-primary/20' : ''
+                className={`glass no-hover-zoom border-0 cursor-pointer ring-2 ring-transparent hover:shadow-none ${
+                  !notification.read ? 'ring-primary/20' : ''
                 } ${getTypeColor(notification.type)}`}
                 onClick={() => markAsRead(notification.id)}
               >

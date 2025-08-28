@@ -98,9 +98,9 @@ const Login = () => {
                 <div className="space-y-4">
                   <p className="text-center text-sm text-muted-foreground">
                     Don't have an account?{" "}
-                    <a href="#" className="text-primary hover:underline">
+                    <Link to="/signup" className="text-primary hover:underline">
                       Sign up
-                    </a>
+                    </Link>
                   </p>
                   <p className="text-center">
                     <a href="#" className="text-sm text-primary hover:underline">

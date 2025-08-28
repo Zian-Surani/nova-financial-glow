@@ -1,16 +1,19 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Shield, TrendingUp, Zap, Mail, Phone, MapPin, Github, Linkedin } from "lucide-react";
+import { ArrowRight, Sparkles, Shield, TrendingUp, Zap, Mail, Phone, MapPin, Github, Linkedin, Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useState } from "react";
 
 const Landing = () => {
+  const [mobileOpen, setMobileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-accent/10 relative overflow-hidden">
+
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 gradient-premium rounded-full opacity-10 animate-pulse"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-64 h-64 gradient-growth rounded-full opacity-10 animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 right-1/3 w-32 h-32 gradient-risk rounded-full opacity-20 animate-pulse delay-500"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 gradient-premium rounded-full opacity-10 motion-safe:animate-pulse"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-64 h-64 gradient-growth rounded-full opacity-10 motion-safe:animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 right-1/3 w-32 h-32 gradient-risk rounded-full opacity-20 motion-safe:animate-pulse delay-500"></div>
       </div>
 
       {/* Navigation */}
@@ -27,27 +30,87 @@ const Landing = () => {
             </div>
             
             <div className="hidden md:flex items-center space-x-8">
-              <Link to="/" className="text-foreground/80 hover:text-foreground transition-smooth hover:scale-105 transform">Home</Link>
-              <Link to="/login" className="text-foreground/80 hover:text-foreground transition-smooth hover:scale-105 transform">Personal</Link>
-              <Link to="/login" className="text-foreground/80 hover:text-foreground transition-smooth hover:scale-105 transform">Business</Link>
+              <Link to="/" className="text-foreground/80 hover:text-foreground transition-smooth md:hover:scale-105 transform">Home</Link>
+              <Link to="/login" className="text-foreground/80 hover:text-foreground transition-smooth md:hover:scale-105 transform">Personal</Link>
+              <Link to="/login" className="text-foreground/80 hover:text-foreground transition-smooth md:hover:scale-105 transform">Business</Link>
             </div>
 
             <div className="flex items-center space-x-4">
-              <ThemeToggle />
-              <Link to="/login">
-                <Button variant="ghost" className="text-foreground hover:scale-105 transform transition-all">
-                  Log in
-                </Button>
-              </Link>
-              <Link to="/personal">
-                <Button variant="premium" className="px-6 hover:scale-105 transform transition-all shadow-lg hover:shadow-glow">
-                  Sign up
-                </Button>
-              </Link>
+              <div className="hidden md:flex items-center space-x-4">
+                <ThemeToggle />
+                <Link to="/login">
+                  <Button variant="ghost" className="text-foreground md:hover:scale-105 transform transition-all">
+                    Log in
+                  </Button>
+                </Link>
+                <Link to="/personal">
+                  <Button variant="premium" className="px-6 md:hover:scale-105 transform transition-all shadow-lg hover:shadow-glow">
+                    Sign up
+                  </Button>
+                </Link>
+              </div>
+              {/* Mobile hamburger */}
+              <button
+                type="button"
+                aria-label="Open menu"
+                aria-controls="mobile-menu"
+                aria-expanded={mobileOpen}
+                onClick={() => setMobileOpen((v) => !v)}
+                className="md:hidden inline-flex items-center justify-center rounded-lg p-2 hover:bg-secondary/60 transition-smooth focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
             </div>
           </div>
         </div>
       </nav>
+
+      {/* Mobile menu overlay */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-20 md:hidden"
+          aria-hidden="true"
+          onClick={() => setMobileOpen(false)}
+        >
+          <div className="absolute inset-0 bg-black/30" />
+        </div>
+      )}
+
+      {/* Mobile menu panel */}
+      <div
+        id="mobile-menu"
+        className={`md:hidden fixed z-30 top-4 left-4 right-4 rounded-2xl glass border border-border/50 transition-all duration-300 origin-top ${
+          mobileOpen ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 -translate-y-2"
+        }`}
+        role="dialog"
+        aria-modal="true"
+      >
+        <div className="p-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-lg font-semibold">Menu</span>
+            <button
+              type="button"
+              aria-label="Close menu"
+              onClick={() => setMobileOpen(false)}
+              className="inline-flex items-center justify-center rounded-lg p-2 hover:bg-secondary/60 transition-smooth"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+          <nav className="flex flex-col gap-2 py-2">
+            <Link to="/" onClick={() => setMobileOpen(false)} className="nav-item">Home</Link>
+            <Link to="/login" onClick={() => setMobileOpen(false)} className="nav-item">Personal</Link>
+            <Link to="/login" onClick={() => setMobileOpen(false)} className="nav-item">Business</Link>
+            <div className="h-px bg-border/60 my-2" />
+            <Link to="/login" onClick={() => setMobileOpen(false)}>
+              <Button variant="ghost" className="w-full justify-start">Log in</Button>
+            </Link>
+            <Link to="/personal" onClick={() => setMobileOpen(false)}>
+              <Button variant="premium" className="w-full">Sign up</Button>
+            </Link>
+          </nav>
+        </div>
+      </div>
 
       {/* Hero Section */}
       <main className="relative z-10 max-w-7xl mx-auto px-6 py-20">
@@ -56,20 +119,20 @@ const Landing = () => {
           <div className="relative mb-12 flex justify-center">
             <div className="relative">
               {/* Primary coin */}
-              <div className="w-32 h-32 rounded-full gradient-premium shadow-glow animate-bounce flex items-center justify-center transform rotate-12">
+              <div className="w-32 h-32 rounded-full gradient-premium shadow-glow motion-safe:animate-bounce flex items-center justify-center transform rotate-12">
                 <span className="text-white text-2xl font-bold">₹</span>
               </div>
               
               {/* Secondary coins */}
-              <div className="absolute -top-4 -left-8 w-24 h-24 rounded-full gradient-growth shadow-md animate-pulse flex items-center justify-center transform -rotate-12">
+              <div className="absolute -top-4 -left-8 w-24 h-24 rounded-full gradient-growth shadow-md motion-safe:animate-pulse flex items-center justify-center transform -rotate-12">
                 <TrendingUp className="w-6 h-6 text-white" />
               </div>
               
-              <div className="absolute -bottom-2 -right-6 w-20 h-20 rounded-full gradient-risk shadow-md animate-pulse delay-500 flex items-center justify-center transform rotate-45">
+              <div className="absolute -bottom-2 -right-6 w-20 h-20 rounded-full gradient-risk shadow-md motion-safe:animate-pulse delay-500 flex items-center justify-center transform rotate-45">
                 <Shield className="w-5 h-5 text-white" />
               </div>
               
-              <div className="absolute top-8 right-12 w-16 h-16 rounded-full gradient-neutral shadow-sm animate-pulse delay-1000 flex items-center justify-center">
+              <div className="absolute top-8 right-12 w-16 h-16 rounded-full gradient-neutral shadow-sm motion-safe:animate-pulse delay-1000 flex items-center justify-center">
                 <Zap className="w-4 h-4 text-primary" />
               </div>
             </div>
@@ -81,7 +144,7 @@ const Landing = () => {
                 A new era of
               </span>
               <br />
-              <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-blue-500 bg-clip-text text-transparent animate-pulse">
+              <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-blue-500 bg-clip-text text-transparent motion-safe:animate-pulse">
                 wealth management
               </span>
             </h1>
@@ -96,7 +159,7 @@ const Landing = () => {
               <Button 
                 variant="premium" 
                 size="lg" 
-                className="px-12 py-6 text-lg font-semibold group hover:scale-110 transform transition-all duration-300 shadow-2xl hover:shadow-glow animate-pulse"
+                className="px-12 py-6 text-lg font-semibold group md:hover:scale-110 transform transition-all duration-300 shadow-2xl hover:shadow-glow motion-safe:animate-pulse"
               >
                 Go Financing
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-all duration-300" />
@@ -117,7 +180,8 @@ const Landing = () => {
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="glass rounded-3xl p-8 hover:shadow-glow transition-all duration-500 hover:scale-105 transform group border border-primary/20">
+            <div className="glass rounded-3xl p-8 hover:shadow-glow transition-all duration-500 md:hover:scale-105 transform group border border-primary/20">
+
               <div className="w-16 h-16 gradient-growth rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform shadow-lg">
                 <TrendingUp className="w-8 h-8 text-white" />
               </div>
@@ -141,7 +205,7 @@ const Landing = () => {
               </div>
             </div>
 
-            <div className="glass rounded-3xl p-8 hover:shadow-glow transition-all duration-500 hover:scale-105 transform group border border-primary/20">
+            <div className="glass rounded-3xl p-8 hover:shadow-glow transition-all duration-500 md:hover:scale-105 transform group border border-primary/20">
               <div className="w-16 h-16 gradient-premium rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform shadow-lg">
                 <Shield className="w-8 h-8 text-white" />
               </div>
@@ -165,7 +229,7 @@ const Landing = () => {
               </div>
             </div>
 
-            <div className="glass rounded-3xl p-8 hover:shadow-glow transition-all duration-500 hover:scale-105 transform group border border-primary/20">
+            <div className="glass rounded-3xl p-8 hover:shadow-glow transition-all duration-500 md:hover:scale-105 transform group border border-primary/20">
               <div className="w-16 h-16 gradient-risk rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform shadow-lg">
                 <Zap className="w-8 h-8 text-white" />
               </div>
@@ -226,7 +290,7 @@ const Landing = () => {
             <div className="glass rounded-3xl p-8 hover:shadow-glow transition-all duration-500">
               <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Contact Us</h3>
               <div className="space-y-6">
-                <div className="flex items-center space-x-4 hover:scale-105 transform transition-all">
+                <div className="flex items-center space-x-4 md:hover:scale-105 transform transition-all">
                   <div className="w-10 h-10 gradient-premium rounded-lg flex items-center justify-center">
                     <Mail className="w-5 h-5 text-white" />
                   </div>
@@ -236,7 +300,7 @@ const Landing = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-center space-x-4 hover:scale-105 transform transition-all">
+                <div className="flex items-center space-x-4 md:hover:scale-105 transform transition-all">
                   <div className="w-10 h-10 gradient-growth rounded-lg flex items-center justify-center">
                     <Phone className="w-5 h-5 text-white" />
                   </div>
@@ -246,7 +310,7 @@ const Landing = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-center space-x-4 hover:scale-105 transform transition-all">
+                <div className="flex items-center space-x-4 md:hover:scale-105 transform transition-all">
                   <div className="w-10 h-10 gradient-risk rounded-lg flex items-center justify-center">
                     <MapPin className="w-5 h-5 text-white" />
                   </div>
@@ -259,7 +323,7 @@ const Landing = () => {
               
               <div className="mt-8 pt-6 border-t border-border/30">
                 <Link to="/personal">
-                  <Button variant="premium" className="w-full hover:scale-105 transform transition-all shadow-lg hover:shadow-glow">
+                  <Button variant="premium" className="w-full md:hover:scale-105 transform transition-all shadow-lg hover:shadow-glow">
                     Start Your Journey
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>

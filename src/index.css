@@ -150,6 +150,8 @@
 
   body {
     @apply bg-background text-foreground font-inter;
+    /* Reserve scrollbar space to prevent layout shift when modals open */
+    scrollbar-gutter: stable both-edges;
   }
 }
 
@@ -261,12 +263,20 @@
   }
 
   /* Global Hover Zoom for Interactive Elements */
-  button:hover,
-  a:hover,
-  .glass:hover,
-  [role="button"]:hover {
-    transform: scale(1.02);
-    transition: all 0.2s ease-out;
+  @media (hover: hover) and (pointer: fine) {
+    button:hover,
+    a:hover,
+    .glass:hover,
+    [role="button"]:hover {
+      transform: scale(1.02);
+      transition: all 0.2s ease-out;
+    }
+
+    /* Opt-out: containers with .no-hover-zoom should never scale on hover */
+    .no-hover-zoom:hover,
+    .no-hover-zoom *:hover {
+      transform: none !important;
+    }
   }
 
   /* Card hover effects */
@@ -274,6 +284,15 @@
     backdrop-filter: blur(25px);
     border-color: hsl(var(--primary) / 0.3);
     box-shadow: 0 8px 32px hsl(var(--primary) / 0.15);
+  }
+
+  /* Touch devices: avoid heavy hover effects */
+  @media (hover: none) {
+    .glass:hover {
+      backdrop-filter: blur(10px);
+      border-color: var(--glass-border);
+      box-shadow: var(--glass-shadow);
+    }
   }
 
   /* Fade transition for route changes */
@@ -289,6 +308,16 @@
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+  
+  /* Respect reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
     }
   }
 }
