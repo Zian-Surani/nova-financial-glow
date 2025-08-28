@@ -22,25 +22,38 @@ import {
 import { Link } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
+import { useEffect, useState } from "react";
 
 const Settings = () => {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: any) => {
+      if (e?.detail && typeof e.detail.collapsed === 'boolean') {
+        setSidebarCollapsed(e.detail.collapsed);
+      }
+    };
+    window.addEventListener('sidebar-collapsed' as any, handler as any);
+    return () => window.removeEventListener('sidebar-collapsed' as any, handler as any);
+  }, []);
+
   return (
     <div className="flex min-h-screen w-full">
       <Sidebar />
-      <div className="flex-1 flex flex-col ml-64">
+      <div className={`flex-1 flex flex-col transition-[margin] duration-300 ${sidebarCollapsed ? 'md:ml-20' : 'md:ml-64'}`}>
         <Header />
-        <main className="flex-1 p-6 bg-gradient-to-br from-background via-primary/5 to-accent/10">
+        <main className="flex-1 p-4 sm:p-6 bg-gradient-to-br from-background via-primary/5 to-accent/10">
           <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
         {/* Header */}
-        <div className="glass rounded-3xl p-6">
-          <div className="flex items-center justify-between">
+        <div className="glass rounded-3xl p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 Settings
               </h1>
               <p className="text-muted-foreground mt-2">Manage your account preferences and security settings</p>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center flex-wrap gap-2 sm:gap-4">
               <Button variant="outline" className="px-6">
                 <Download className="w-4 h-4 mr-2" />
                 Export Data
