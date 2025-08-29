@@ -39,7 +39,7 @@ const Landing = () => {
                     Log in
                   </Button>
                 </Link>
-                <Link to="/personal">
+                <Link to="/signup">
                   <Button variant="premium" className="px-6 md:hover:scale-105 transform transition-all shadow-lg hover:shadow-glow">
                     Sign up
                   </Button>
@@ -101,7 +101,7 @@ const Landing = () => {
             <Link to="/login" onClick={() => setMobileOpen(false)}>
               <Button variant="ghost" className="w-full justify-start">Log in</Button>
             </Link>
-            <Link to="/personal" onClick={() => setMobileOpen(false)}>
+            <Link to="/signup" onClick={() => setMobileOpen(false)}>
               <Button variant="premium" className="w-full">Sign up</Button>
             </Link>
           </nav>
