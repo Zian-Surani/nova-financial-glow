@@ -86,6 +86,11 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
+  /* Utility to stabilize scrollbars inside containers (e.g., dialogs) */
+  .stable-scroll {
+    scrollbar-gutter: stable both-edges;
+  }
+
   .dark {
     /* Dark mode - Premium fintech aesthetic */
     --background: 258 28% 6%;
@@ -152,7 +157,12 @@
     @apply bg-background text-foreground font-inter;
     /* Reserve scrollbar space to prevent layout shift when modals open */
     scrollbar-gutter: stable both-edges;
+    /* Always show vertical scrollbar to avoid content shifting across routes/dialogs */
+    overflow-y: scroll;
+    /* Prevent scroll chaining from inner containers to body */
+    overscroll-behavior: none;
   }
+  html { overscroll-behavior: none; }
 }
 
 @layer components {

@@ -1,13 +1,67 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, TrendingDown, DollarSign, PieChart, BarChart3, Activity, ArrowLeft } from "lucide-react";
+import { TrendingUp, TrendingDown, DollarSign, IndianRupee, Euro, PoundSterling, JapaneseYen, PieChart, BarChart3, Activity } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useToast } from "@/hooks/use-toast";
 
 const Portfolio = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { toast } = useToast();
+
+  // Currency selection state
+  const [currency, setCurrency] = useState<'INR' | 'USD' | 'EUR' | 'GBP' | 'JPY'>('INR');
+  const [showCurrencyMenu, setShowCurrencyMenu] = useState(false); // legacy (not used with Radix)
+  const currencyBtnRef = useRef<HTMLDivElement | null>(null); // legacy (not used with Radix)
+  // INR per 1 unit of target currency. Accurate for USD as requested; others are placeholders – adjust as needed.
+  const inrPerUnit: Record<'INR' | 'USD' | 'EUR' | 'GBP' | 'JPY', number> = {
+    INR: 1,
+    USD: 88.18, 
+    EUR: 96.0,  
+    GBP: 113.0, 
+    JPY: 0.61,  
+  };
+
+  
+
+  const currencyLocale: Record<typeof currency, { locale: string; code: string }> = {
+    INR: { locale: 'en-IN', code: 'INR' },
+    USD: { locale: 'en-US', code: 'USD' },
+    EUR: { locale: 'de-DE', code: 'EUR' },
+    GBP: { locale: 'en-GB', code: 'GBP' },
+    JPY: { locale: 'ja-JP', code: 'JPY' },
+  };
+
+  const formatCurrency = (amountInINR: number) => {
+    const { locale, code } = currencyLocale[currency];
+    const converted = currency === 'INR' ? amountInINR : amountInINR / inrPerUnit[currency];
+    return new Intl.NumberFormat(locale, { style: 'currency', currency: code, maximumFractionDigits: 2 }).format(converted);
+  };
+
+  const CurrencyIcon = () => {
+    switch (currency) {
+      case 'INR':
+        return <IndianRupee className="w-6 h-6 text-white" />;
+      case 'USD':
+        return <DollarSign className="w-6 h-6 text-white" />;
+      case 'EUR':
+        return <Euro className="w-6 h-6 text-white" />;
+      case 'GBP':
+        return <PoundSterling className="w-6 h-6 text-white" />;
+      case 'JPY':
+        return <JapaneseYen className="w-6 h-6 text-white" />;
+      default:
+        return <DollarSign className="w-6 h-6 text-white" />;
+    }
+  };
+
+  // Base figures in INR
+  const baseTotalValue = 1245678; 
+  const baseDaysGain = 8240; 
+  const baseTotalDonut = 1240000; 
 
   useEffect(() => {
     const handler = (e: any) => {
@@ -26,7 +80,7 @@ const Portfolio = () => {
         <Header />
         <main className="flex-1 p-4 sm:p-6 bg-gradient-to-br from-background via-primary/5 to-accent/10">
           <div className="max-w-7xl mx-auto space-y-8 animate-fade-in">
-        {/* Header */}
+        
         <div className="glass rounded-3xl p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
@@ -35,27 +89,62 @@ const Portfolio = () => {
               </h1>
               <p className="text-muted-foreground mt-2">Track and optimize your investment portfolio</p>
             </div>
-            <Button variant="premium" className="px-6">
+            <Button
+              variant="premium"
+              className="px-6"
+              onClick={() =>
+                toast({ title: 'Rebalance Started', description: 'We will optimize your allocations based on your risk profile.' })
+              }
+            >
               Rebalance Portfolio
             </Button>
           </div>
         </div>
 
-        {/* Portfolio Overview */}
-        <div className="grid md:grid-cols-4 gap-6">
-          <Card className="glass border-0 hover:shadow-glow transition-smooth">
+       
+        <div className="grid md:grid-cols-4 gap-6 relative z-0">
+          <Card className="glass border-0 hover:shadow-glow transition-smooth relative overflow-visible z-20">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Total Value</p>
-                  <p className="text-3xl font-bold">₹12,45,678</p>
+                  <p className="text-3xl font-bold">{formatCurrency(baseTotalValue)}</p>
                   <div className="flex items-center mt-2">
                     <TrendingUp className="w-4 h-4 text-success mr-1" />
                     <span className="text-success text-sm">+12.5%</span>
                   </div>
                 </div>
-                <div className="w-12 h-12 gradient-growth rounded-xl flex items-center justify-center">
-                  <DollarSign className="w-6 h-6 text-white" />
+                <div className="relative" ref={currencyBtnRef}>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button
+                        type="button"
+                        className="w-12 h-12 gradient-growth rounded-xl flex items-center justify-center hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary/60"
+                        aria-label="Change currency"
+                      >
+                        <CurrencyIcon />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      {(['INR', 'USD', 'EUR', 'GBP', 'JPY'] as const).map((c) => (
+                        <DropdownMenuItem
+                          key={c}
+                          className={`flex items-center gap-2 ${c === currency ? 'font-semibold' : ''}`}
+                          onSelect={() => {
+                            setCurrency(c);
+                            toast({ title: 'Currency Changed', description: `Showing amounts in ${c}.` });
+                          }}
+                        >
+                          {c === 'INR' && <IndianRupee className="w-4 h-4" />} 
+                          {c === 'USD' && <DollarSign className="w-4 h-4" />} 
+                          {c === 'EUR' && <Euro className="w-4 h-4" />} 
+                          {c === 'GBP' && <PoundSterling className="w-4 h-4" />} 
+                          {c === 'JPY' && <JapaneseYen className="w-4 h-4" />} 
+                          <span>{c}</span>
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </div>
             </CardContent>
@@ -66,7 +155,7 @@ const Portfolio = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Day's Gain</p>
-                  <p className="text-3xl font-bold text-success">₹8,240</p>
+                  <p className="text-3xl font-bold text-success">{formatCurrency(baseDaysGain)}</p>
                   <div className="flex items-center mt-2">
                     <TrendingUp className="w-4 h-4 text-success mr-1" />
                     <span className="text-success text-sm">+2.1%</span>
@@ -133,7 +222,7 @@ const Portfolio = () => {
                   <div className="absolute inset-8 rounded-full gradient-risk opacity-60 animate-pulse delay-1000"></div>
                   <div className="absolute inset-12 rounded-full bg-background flex items-center justify-center">
                     <div className="text-center">
-                      <p className="text-2xl font-bold">₹12.4L</p>
+                      <p className="text-2xl font-bold">{formatCurrency(baseTotalDonut)}</p>
                       <p className="text-sm text-muted-foreground">Total</p>
                     </div>
                   </div>

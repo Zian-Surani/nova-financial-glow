@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,6 +9,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { useToast } from "@/hooks/use-toast";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
@@ -27,6 +28,8 @@ const SignUp = () => {
       title: "Account Created Successfully!",
       description: "Welcome to FINEO. You're now ready to start your financial journey.",
     });
+    // Navigate to personal dashboard after sign up
+    navigate('/personal');
   };
 
   return (
@@ -167,6 +170,7 @@ const SignUp = () => {
                     </Label>
                   </div>
 
+                  <Link to="/login">
                   <Button
                     type="submit"
                     disabled={!agreeTerms || !formData.password || formData.password !== formData.confirmPassword}
@@ -174,6 +178,7 @@ const SignUp = () => {
                   >
                     Create Account
                   </Button>
+                  </Link>
                 </form>
 
                 <div className="text-center text-sm">
