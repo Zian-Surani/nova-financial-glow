@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff, Github, ArrowLeft, Users, Sparkles, TrendingUp, Shield, Zap } from "lucide-react";
+import { Eye, EyeOff, Github, ArrowLeft, Users, TrendingUp, Shield, Zap } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Login = () => {
@@ -33,10 +33,8 @@ const Login = () => {
 
             {/* Logo */}
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 gradient-premium rounded-lg flex items-center justify-center animate-pulse">
-                <Sparkles className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">FINEO</span>
+              <img src="/logo.jpg" alt="FINEO logo" className="h-10 w-10 rounded-lg object-cover" />
+              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text ">FINEO</span>
             </div>
 
             {/* Login Card */}

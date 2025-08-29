@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Shield, TrendingUp, Zap, Mail, Phone, MapPin, Github, Linkedin, Menu, X } from "lucide-react";
+import { ArrowRight, Shield, TrendingUp, Zap, Mail, Phone, MapPin, Github, Linkedin, Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useState } from "react";
 
@@ -21,12 +21,8 @@ const Landing = () => {
         <div className="glass rounded-2xl p-4 max-w-7xl mx-auto">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 gradient-premium rounded-lg flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                FINEO
-              </span>
+              <img src="/logo.jpg" alt="FINEO logo" className="h-10 w-10 rounded-lg object-cover" />
+              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text ">FINEO</span>
             </div>
             
             <div className="hidden md:flex items-center space-x-8">
@@ -341,9 +337,7 @@ const Landing = () => {
             {/* Brand */}
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 gradient-premium rounded-lg flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-white" />
-                </div>
+                <img src="/logo.jpg" alt="FINEO logo" className="h-10 w-10 rounded-lg object-cover" />
                 <span className="text-xl font-bold">FINEO</span>
               </div>
               <p className="text-muted-foreground text-sm">

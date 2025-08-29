@@ -7,9 +7,10 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
           <div>
-            <h3 className="text-lg font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-3">
-              NovaFinance
-            </h3>
+            <div className="flex items-center space-x-2 mb-3">
+              <img src="/logo.jpg" alt="FINEO logo" className="h-10 w-10 rounded-lg object-cover" />
+              <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">FINEO</span>
+            </div>
             <p className="text-sm text-muted-foreground">
               Empowering your financial future with AI-driven insights and blockchain-verified transparency.
             </p>
@@ -57,7 +58,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-border/50 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
           <p className="text-sm text-muted-foreground">
-            © 2024 NovaFinance. All rights reserved.
+            © 2024 FINEO. All rights reserved.
           </p>
           <p className="text-sm text-muted-foreground mt-2 md:mt-0">
             Powered by AI • Secured by Blockchain

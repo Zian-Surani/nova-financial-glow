@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, Calendar, ExternalLink, Download, Sparkles, Award, TrendingUp } from "lucide-react";
+import { ArrowLeft, Calendar, ExternalLink, Download, Award, TrendingUp } from "lucide-react";
+
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Press = () => {
@@ -79,9 +80,7 @@ const Press = () => {
                   Back to home
                 </Link>
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 gradient-premium rounded-lg flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-white" />
-                  </div>
+                  <img src="/logo.jpg" alt="FINEO logo" className="h-10 w-10 rounded-lg object-cover" />
                   <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                     FINEO
                   </span>
