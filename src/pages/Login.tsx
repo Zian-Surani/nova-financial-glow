@@ -90,7 +90,7 @@ const Login = () => {
                 </div>
 
                 <Link to="/personal">
-                  <Button className="w-full gradient-premium text-white border-0 hover:opacity-90 hover:scale-105 transform transition-all py-6 shadow-lg hover:shadow-glow">
+                  <Button className="w-full gradient-premium text-white border-0 hover:opacity-90 hover:scale-105 my-8 transform transition-all py-6 shadow-lg hover:shadow-glow">
                     Sign in
                   </Button>
                 </Link>

@@ -30,7 +30,7 @@ const Portfolio = () => {
         <div className="glass rounded-3xl p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text t">
                 Portfolio Management
               </h1>
               <p className="text-muted-foreground mt-2">Track and optimize your investment portfolio</p>

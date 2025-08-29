@@ -172,7 +172,7 @@ const SignUp = () => {
                   <Button
                     type="submit"
                     disabled={!agreeTerms || !formData.password || formData.password !== formData.confirmPassword}
-                    className="w-full glass bg-gradient-premium text-white font-semibold py-3 hover:scale-105 transform transition-all shadow-lg hover:shadow-glow disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-full glass gradient-premium text-white font-semibold py-3 hover:scale-105 transform transition-all shadow-lg hover:shadow-glow disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     Create Account
                   </Button>

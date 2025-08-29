@@ -170,7 +170,7 @@ const PersonalDashboard = () => {
             <div className="glass rounded-3xl p-4 sm:p-6">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                  <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                  <h1 className="text-3xl sm:text-4xl font-bold  ">
                     Personal Dashboard
                   </h1>
                   <p className="text-muted-foreground mt-2">
@@ -218,69 +218,16 @@ const PersonalDashboard = () => {
               onSaveLayout={handleSaveLayout}
             />
 
-            {/* Core Features */}
-            <div className="space-y-6">
-              <div className="flex items-center space-x-2">
-                <Star className="w-5 h-5 text-primary" />
-                <h3 className="text-lg font-semibold">Core Features (MVP)</h3>
-              </div>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {visibleWidgets.slice(0, 3).map((widget) => (
-                  <div key={widget.id} className="animate-fade-in">
-                    {widget.component}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Extended Features */}
-            <div className="space-y-6">
-              <div className="flex items-center space-x-2">
-                <Award className="w-5 h-5 text-accent" />
-                <h3 className="text-lg font-semibold">Extended Features (Add-ons)</h3>
-              </div>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {visibleWidgets.slice(3).map((widget) => (
-                  <div key={widget.id} className="animate-fade-in">
-                    {widget.component}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Features List */}
-            <Card className="glass border-0">
-              <CardHeader>
-                <CardTitle>Feature Overview</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div>
-                    <h4 className="font-semibold mb-4 text-primary">Core Features (MVP)</h4>
-                    <ul className="space-y-2 text-sm">
-                      <li>• <strong>Unified Finance Dashboard</strong> - One place for net worth, asset allocation, cashflow, and upcoming mandates (EMIs, SIPs, rent)</li>
-                      <li>• <strong>FairScore (Transparent Credit Score)</strong> - Score (300-900) based on behaviours like repayment, savings rate, debt-to-income, SIP regularity; shows factor breakdown</li>
-                      <li>• <strong>Fairness Audit & Badge</strong> - Checks for gender fairness (Equal Opportunity, Statistical Parity). Shows ✅ badge if fair</li>
-                      <li>• <strong>Blockchain Verification</strong> - Fairness report + scoring version hashed and logged on chain; "Verify on Blockchain" button for proof</li>
-                      <li>• <strong>Financial Health Predictor</strong> - 90-day cashflow forecast with risk flags: "Cash may run out in 45 days," "12% chance of EMI default"</li>
-                      <li>• <strong>Actionable Recommendations</strong> - Nudges like "Increase SIP by ₹2000," "Avoid new loan (DTI high)," "EMI due in 3 days"</li>
-                    </ul>
-                  </div>
-                  
-                  <div>
-                    <h4 className="font-semibold mb-4 text-accent">Extended Features (Add-ons)</h4>
-                    <ul className="space-y-2 text-sm">
-                      <li>• <strong>Goal Tracking</strong> - User sets a goal (house, study abroad, emergency fund); dashboard shows progress bar (e.g., "62% to goal")</li>
-                      <li>• <strong>Simulation ("What If")</strong> - Users can test actions like "Add ₹2000 to SIP" and see updated forecast/goal completion instantly</li>
-                      <li>• <strong>Gamification</strong> - Badges and progress markers (e.g., "On-time payer," "Steady saver"), plus monthly improvement stats</li>
-                      <li>• <strong>Data Privacy Toggle</strong> - Simple option: "Only I can see my score" or "Share with lender (export PDF)." Builds user trust</li>
-                    </ul>
-                  </div>
+            {/* Dense Masonry to fill whitespace */}
+            <div className="columns-1 md:columns-2 xl:columns-3 gap-x-6 [column-fill:balance]">
+              {visibleWidgets.map((widget) => (
+                <div key={widget.id} className="mb-6 animate-fade-in [break-inside:avoid]">
+                  {widget.component}
                 </div>
-              </CardContent>
-            </Card>
+              ))}
+            </div>
+
+            
           </main>
           
           <Footer />
