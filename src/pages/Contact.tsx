@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Mail, Phone, MapPin, Clock, Sparkles, Send } from "lucide-react";
+import { ArrowLeft, Mail, Phone, MapPin, Clock, Send } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useToast } from "@/hooks/use-toast";
 
@@ -46,9 +46,7 @@ const Contact = () => {
                   Back to home
                 </Link>
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 gradient-premium rounded-lg flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-white" />
-                  </div>
+                  <img src="/logo.jpg" alt="FINEO logo" className="h-10 w-10 rounded-lg object-cover" />
                   <span className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                     FINEO
                   </span>

@@ -45,11 +45,12 @@ export function Sidebar() {
         {/* Header */}
         <div className="p-6 border-b border-border/50">
           <div className="flex items-center justify-between">
-            {!isCollapsed && (
-              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text">
-                NovaFinance
-              </h1>
-            )}
+            <div className="flex items-center space-x-2">
+              <img src="/logo.jpg" alt="NovaFinance logo" className="h-8 w-8 rounded-lg object-cover" />
+              {!isCollapsed && (
+                <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text ">NovaFinance</span>
+              )}
+            </div>
             <Button
               variant="ghost"
               size="sm"
