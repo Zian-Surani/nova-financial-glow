@@ -31,7 +31,7 @@ const Insights = () => {
         <div className="glass rounded-3xl p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text">
                 AI Financial Insights
               </h1>
               <p className="text-muted-foreground mt-2">Personalized recommendations powered by machine learning</p>
@@ -49,7 +49,7 @@ const Insights = () => {
             <CardContent className="p-6">
               <div className="text-center space-y-4">
                 <div className="relative w-24 h-24 mx-auto">
-                  <div className="absolute inset-0 rounded-full gradient-growth animate-spin-slow"></div>
+                  <div className="absolute inset-0 rounded-full gradient-growth animate-bounce"></div>
                   <div className="absolute inset-2 rounded-full bg-background flex items-center justify-center">
                     <span className="text-2xl font-bold">85</span>
                   </div>
@@ -66,7 +66,7 @@ const Insights = () => {
             <CardContent className="p-6">
               <div className="text-center space-y-4">
                 <div className="relative w-24 h-24 mx-auto">
-                  <div className="absolute inset-0 rounded-full gradient-premium animate-pulse"></div>
+                  <div className="absolute inset-0 rounded-full gradient-premium animate-bounce"></div>
                   <div className="absolute inset-2 rounded-full bg-background flex items-center justify-center">
                     <span className="text-2xl font-bold">92</span>
                   </div>

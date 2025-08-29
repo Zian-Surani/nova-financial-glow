@@ -46,7 +46,7 @@ export function Sidebar() {
         <div className="p-6 border-b border-border/50">
           <div className="flex items-center justify-between">
             {!isCollapsed && (
-              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text">
                 NovaFinance
               </h1>
             )}

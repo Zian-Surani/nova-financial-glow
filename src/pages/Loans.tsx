@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CreditCard, Home, Car, GraduationCap, Building, Calculator, ArrowLeft } from "lucide-react";
+import { CreditCard, GraduationCap, Building, Calculator, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
@@ -30,7 +30,7 @@ const Loans = () => {
         <div className="glass rounded-3xl p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              <h1 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text ">
                 Loan Management
               </h1>
               <p className="text-muted-foreground mt-2">Track, manage, and optimize your loan portfolio</p>
@@ -124,7 +124,6 @@ const Loans = () => {
                 {
                   type: "Home Loan",
                   bank: "HDFC Bank",
-                  icon: <Home className="w-6 h-6 text-white" />,
                   principal: "₹35,00,000",
                   outstanding: "₹28,50,000",
                   emi: "₹24,560",
@@ -137,7 +136,6 @@ const Loans = () => {
                 {
                   type: "Car Loan",
                   bank: "ICICI Bank",
-                  icon: <Car className="w-6 h-6 text-white" />,
                   principal: "₹8,50,000",
                   outstanding: "₹5,20,000",
                   emi: "₹18,900",
@@ -150,7 +148,6 @@ const Loans = () => {
                 {
                   type: "Personal Loan",
                   bank: "Axis Bank",
-                  icon: <CreditCard className="w-6 h-6 text-white" />,
                   principal: "₹5,00,000",
                   outstanding: "₹3,25,000",
                   emi: "₹12,450",
@@ -163,7 +160,6 @@ const Loans = () => {
                 {
                   type: "Education Loan",
                   bank: "SBI",
-                  icon: <GraduationCap className="w-6 h-6 text-white" />,
                   principal: "₹12,00,000",
                   outstanding: "₹8,72,890",
                   emi: "₹15,200",
@@ -177,12 +173,9 @@ const Loans = () => {
                 <div key={index} className="glass rounded-xl p-6 hover:shadow-glow transition-smooth">
                   <div className="grid lg:grid-cols-5 gap-6 items-center">
                     {/* Loan Info */}
-                    <div className="flex items-center space-x-4">
-                      <div className={`w-12 h-12 ${loan.color} rounded-xl flex items-center justify-center`}>
-                        {loan.icon}
-                      </div>
+                    <div className="flex items-center">
                       <div>
-                        <h3 className="font-semibold">{loan.type}</h3>
+                        <h3 className="text-lg md:text-xl font-bold leading-tight">{loan.type}</h3>
                         <p className="text-sm text-muted-foreground">{loan.bank}</p>
                       </div>
                     </div>
