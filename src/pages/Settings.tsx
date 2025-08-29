@@ -9,23 +9,28 @@ import {
   User, 
   Bell, 
   Shield, 
-  CreditCard, 
   Database, 
   Smartphone,
   Mail,
   Globe,
   Lock,
   Download,
-  Upload,
-  ArrowLeft
+  Upload
 } from "lucide-react";
-import { Link } from "react-router-dom";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useUser } from "@/context/UserContext";
+import { useToast } from "@/hooks/use-toast";
 
 const Settings = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { profile, updateProfile, password, updatePassword } = useUser();
+  const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
     const handler = (e: any) => {
@@ -69,7 +74,7 @@ const Settings = () => {
         <Card className="glass border-0">
           <CardContent className="p-6">
             <Tabs defaultValue="profile" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-6 glass border-0">
+              <TabsList className="grid w-full grid-cols-5 glass border-0">
                 <TabsTrigger value="profile" className="flex items-center space-x-2">
                   <User className="w-4 h-4" />
                   <span className="hidden sm:inline">Profile</span>
@@ -81,10 +86,6 @@ const Settings = () => {
                 <TabsTrigger value="notifications" className="flex items-center space-x-2">
                   <Bell className="w-4 h-4" />
                   <span className="hidden sm:inline">Notifications</span>
-                </TabsTrigger>
-                <TabsTrigger value="billing" className="flex items-center space-x-2">
-                  <CreditCard className="w-4 h-4" />
-                  <span className="hidden sm:inline">Billing</span>
                 </TabsTrigger>
                 <TabsTrigger value="data" className="flex items-center space-x-2">
                   <Database className="w-4 h-4" />
@@ -105,16 +106,40 @@ const Settings = () => {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="flex items-center space-x-4 mb-6">
-                        <div className="w-20 h-20 gradient-premium rounded-full flex items-center justify-center">
-                          <User className="w-10 h-10 text-white" />
+                        <div className="w-20 h-20 rounded-full overflow-hidden bg-muted flex items-center justify-center">
+                          {profile.avatarUrl ? (
+                            <img src={profile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                          ) : (
+                            <User className="w-10 h-10 text-muted-foreground" />
+                          )}
                         </div>
                         <div className="flex-1">
-                          <Button variant="outline" size="sm">
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/png,image/jpeg,image/jpg,image/svg+xml"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (!file) return;
+                              if (file.size > 5 * 1024 * 1024) {
+                                toast({ title: 'File too large', description: 'Max size is 5MB', variant: 'destructive' });
+                                return;
+                              }
+                              const reader = new FileReader();
+                              reader.onload = () => {
+                                updateProfile({ avatarUrl: reader.result as string });
+                                toast({ title: 'Profile photo updated' });
+                              };
+                              reader.readAsDataURL(file);
+                            }}
+                          />
+                          <Button variant="outline" size="sm" onClick={() => fileInputRef.current?.click()}>
                             <Upload className="w-4 h-4 mr-2" />
                             Upload Photo
                           </Button>
                           <p className="text-xs text-muted-foreground mt-1">
-                            Supported formats: SVG, JPG, PNG (5MB each)
+                            Supported formats: JPG, PNG, SVG (5MB max)
                           </p>
                         </div>
                       </div>
@@ -122,22 +147,22 @@ const Settings = () => {
                       <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
                           <Label htmlFor="firstName">First Name</Label>
-                          <Input id="firstName" defaultValue="John" />
+                          <Input id="firstName" value={profile.firstName} onChange={(e) => updateProfile({ firstName: e.target.value })} />
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="lastName">Last Name</Label>
-                          <Input id="lastName" defaultValue="Doe" />
+                          <Input id="lastName" value={profile.lastName} onChange={(e) => updateProfile({ lastName: e.target.value })} />
                         </div>
                       </div>
 
                       <div className="space-y-2">
                         <Label htmlFor="email">Email Address</Label>
-                        <Input id="email" type="email" defaultValue="john.doe@example.com" />
+                        <Input id="email" type="email" value={profile.email} onChange={(e) => updateProfile({ email: e.target.value })} />
                       </div>
 
                       <div className="space-y-2">
                         <Label htmlFor="phone">Phone Number</Label>
-                        <Input id="phone" defaultValue="+91 9876543210" />
+                        <Input id="phone" value={profile.phone} onChange={(e) => updateProfile({ phone: e.target.value })} />
                       </div>
 
                       <div className="space-y-2">
@@ -146,7 +171,8 @@ const Settings = () => {
                           id="bio"
                           className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                           placeholder="Tell us about yourself..."
-                          defaultValue="Financial enthusiast focused on long-term wealth building and smart investment strategies."
+                          value={profile.bio}
+                          onChange={(e) => updateProfile({ bio: e.target.value })}
                         />
                       </div>
                     </CardContent>
@@ -211,20 +237,44 @@ const Settings = () => {
                     <CardContent className="space-y-4">
                       <div className="space-y-2">
                         <Label htmlFor="currentPassword">Current Password</Label>
-                        <Input id="currentPassword" type="password" placeholder="••••••••" />
+                        <Input id="currentPassword" type="password" placeholder="••••••••" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
                       </div>
 
                       <div className="space-y-2">
                         <Label htmlFor="newPassword">New Password</Label>
-                        <Input id="newPassword" type="password" placeholder="••••••••" />
+                        <Input id="newPassword" type="password" placeholder="••••••••" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
                       </div>
 
                       <div className="space-y-2">
                         <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                        <Input id="confirmPassword" type="password" placeholder="••••••••" />
+                        <Input id="confirmPassword" type="password" placeholder="••••••••" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                       </div>
 
-                      <Button className="w-full">Update Password</Button>
+                      <Button
+                        className="w-full"
+                        onClick={() => {
+                          // Validation rules
+                          if (password && currentPassword !== password) {
+                            toast({ title: 'Incorrect current password', variant: 'destructive' });
+                            return;
+                          }
+                          if (newPassword.length < 6) {
+                            toast({ title: 'Password too short', description: 'Use at least 6 characters', variant: 'destructive' });
+                            return;
+                          }
+                          if (newPassword !== confirmPassword) {
+                            toast({ title: 'Passwords do not match', variant: 'destructive' });
+                            return;
+                          }
+                          updatePassword(newPassword);
+                          setCurrentPassword('');
+                          setNewPassword('');
+                          setConfirmPassword('');
+                          toast({ title: 'Password updated successfully' });
+                        }}
+                      >
+                        Update Password
+                      </Button>
 
                       <div className="border-t pt-4 space-y-4">
                         <h4 className="font-semibold">Two-Factor Authentication</h4>
@@ -322,77 +372,6 @@ const Settings = () => {
                           <Switch defaultChecked={notification.enabled} />
                         </div>
                       ))}
-                    </CardContent>
-                  </Card>
-                </div>
-              </TabsContent>
-
-              {/* Billing Tab */}
-              <TabsContent value="billing" className="space-y-6">
-                <div className="grid lg:grid-cols-2 gap-8">
-                  <Card className="glass border-0">
-                    <CardHeader>
-                      <CardTitle>Current Plan</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="glass rounded-xl p-6 bg-gradient-to-r from-premium/10 to-premium/5">
-                        <h3 className="text-xl font-bold mb-2">Premium Plan</h3>
-                        <p className="text-3xl font-bold mb-4">₹999<span className="text-base font-normal">/month</span></p>
-                        <ul className="space-y-2 text-sm text-muted-foreground">
-                          <li>✓ Unlimited portfolio tracking</li>
-                          <li>✓ Advanced AI insights</li>
-                          <li>✓ Real-time market data</li>
-                          <li>✓ Premium customer support</li>
-                          <li>✓ Tax optimization tools</li>
-                        </ul>
-                        <Button variant="outline" className="w-full mt-4">
-                          Change Plan
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card className="glass border-0">
-                    <CardHeader>
-                      <CardTitle>Payment Methods</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="glass rounded-xl p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center space-x-3">
-                            <div className="w-10 h-6 gradient-premium rounded"></div>
-                            <div>
-                              <p className="font-medium">•••• •••• •••• 1234</p>
-                              <p className="text-sm text-muted-foreground">Expires 12/25</p>
-                            </div>
-                          </div>
-                          <span className="text-xs px-2 py-1 bg-success/10 text-success rounded-full">Primary</span>
-                        </div>
-                      </div>
-
-                      <Button variant="outline" className="w-full">
-                        + Add Payment Method
-                      </Button>
-
-                      <div className="border-t pt-4">
-                        <h4 className="font-semibold mb-3">Billing History</h4>
-                        <div className="space-y-2">
-                          {[
-                            { date: "Jan 15, 2025", amount: "₹999", status: "Paid" },
-                            { date: "Dec 15, 2024", amount: "₹999", status: "Paid" },
-                            { date: "Nov 15, 2024", amount: "₹999", status: "Paid" }
-                          ].map((bill, index) => (
-                            <div key={index} className="flex items-center justify-between text-sm">
-                              <span>{bill.date}</span>
-                              <div className="flex items-center space-x-2">
-                                <span>{bill.amount}</span>
-                                <span className="text-success">{bill.status}</span>
-                                <Button variant="ghost" size="sm">Download</Button>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
                     </CardContent>
                   </Card>
                 </div>
@@ -546,31 +525,6 @@ const Settings = () => {
                       </div>
 
                       <div className="space-y-4">
-                        <div>
-                          <Label className="text-base font-semibold">Dashboard Layout</Label>
-                          <p className="text-sm text-muted-foreground mb-3">Customize your dashboard view</p>
-                          <div className="grid grid-cols-2 gap-3">
-                            <div className="glass rounded-xl p-3 border-2 border-primary cursor-pointer">
-                              <div className="space-y-1">
-                                <div className="h-2 bg-primary rounded"></div>
-                                <div className="grid grid-cols-2 gap-1">
-                                  <div className="h-4 bg-muted rounded"></div>
-                                  <div className="h-4 bg-muted rounded"></div>
-                                </div>
-                              </div>
-                              <p className="text-xs text-center mt-2">Compact</p>
-                            </div>
-                            <div className="glass rounded-xl p-3 cursor-pointer">
-                              <div className="space-y-1">
-                                <div className="h-2 bg-muted rounded"></div>
-                                <div className="h-6 bg-muted rounded"></div>
-                                <div className="h-6 bg-muted rounded"></div>
-                              </div>
-                              <p className="text-xs text-center mt-2">Spacious</p>
-                            </div>
-                          </div>
-                        </div>
-
                         <div>
                           <Label className="text-base font-semibold">Number Format</Label>
                           <p className="text-sm text-muted-foreground mb-3">How numbers are displayed</p>

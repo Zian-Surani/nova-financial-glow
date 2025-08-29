@@ -125,8 +125,8 @@ export function NotificationCenter() {
         </Button>
       </DialogTrigger>
       
-      <DialogContent className="w-[92vw] sm:w-[420px] md:w-[480px] h-[70vh] flex flex-col glass no-hover-zoom border-0 overflow-hidden transform-gpu will-change-transform [contain:layout_paint] transition-none [&_*]:transition-none data-[state=open]:animate-none data-[state=closed]:animate-none motion-reduce:animate-none">
-        <DialogHeader>
+      <DialogContent className="w-[92vw] sm:w-[420px] md:w-[480px] h-[70vh] flex flex-col glass no-hover-zoom border-0 overflow-hidden stable-scroll transition-none [&_*]:transition-none data-[state=open]:animate-none data-[state=closed]:animate-none motion-reduce:animate-none">
+        <DialogHeader className="sticky top-0 z-10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/75 border-b border-border/50">
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl font-bold">Notifications</DialogTitle>
             {unreadCount > 0 && (
@@ -142,7 +142,7 @@ export function NotificationCenter() {
           </div>
         </DialogHeader>
         
-        <div className="space-y-4 mt-6 flex-1 overflow-y-auto overflow-x-hidden pr-2 [scrollbar-gutter:stable_both-edges] overscroll-contain">
+        <div className="space-y-4 flex-1 min-h-0 h-[calc(70vh-56px)] overflow-y-scroll overflow-x-hidden pr-2 [scrollbar-gutter:stable_both-edges] overscroll-contain stable-scroll">
           {notifications.length === 0 ? (
             <div className="text-center py-8">
               <Bell className="w-12 h-12 text-muted-foreground mx-auto mb-4" />

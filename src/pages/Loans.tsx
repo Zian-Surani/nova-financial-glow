@@ -1,22 +1,57 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CreditCard, GraduationCap, Building, Calculator, ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { CreditCard, GraduationCap, Building, Calculator } from "lucide-react";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Header } from "@/components/dashboard/Header";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
+
+type LoanItem = {
+  type: string;
+  bank: string;
+  principal: string;
+  outstanding: string;
+  emi: string;
+  rate: string;
+  tenure: string;
+  remaining: string;
+  progress: number;
+  color: string;
+};
 
 const Loans = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { toast } = useToast();
+  const [calcOpen, setCalcOpen] = useState(false);
+  const [payOpen, setPayOpen] = useState<null | LoanItem>(null);
+  const [detailsOpen, setDetailsOpen] = useState<null | LoanItem>(null);
+  const [lastPrepay, setLastPrepay] = useState<number | null>(null);
+  // calculator state
+  const [amount, setAmount] = useState<number>(1000000);
+  const [rate, setRate] = useState<number>(8.5);
+  const [years, setYears] = useState<number>(15);
+  const emi = useMemo(() => {
+    const P = amount || 0;
+    const r = (rate || 0) / 1200; // monthly
+    const n = (years || 0) * 12;
+    if (!P || !r || !n) return 0;
+    return P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+  }, [amount, rate, years]);
 
   useEffect(() => {
-    const handler = (e: any) => {
-      if (e?.detail && typeof e.detail.collapsed === 'boolean') {
-        setSidebarCollapsed(e.detail.collapsed);
+    type SidebarCollapsedEvent = CustomEvent<{ collapsed: boolean }>;
+    const handler = (e: Event) => {
+      const ce = e as SidebarCollapsedEvent;
+      if (typeof ce.detail?.collapsed === 'boolean') {
+        setSidebarCollapsed(ce.detail.collapsed);
       }
     };
-    window.addEventListener('sidebar-collapsed' as any, handler as any);
-    return () => window.removeEventListener('sidebar-collapsed' as any, handler as any);
+    const eventName = 'sidebar-collapsed';
+    window.addEventListener(eventName, handler as EventListener);
+    return () => window.removeEventListener(eventName, handler as EventListener);
   }, []);
 
   return (
@@ -35,7 +70,7 @@ const Loans = () => {
               </h1>
               <p className="text-muted-foreground mt-2">Track, manage, and optimize your loan portfolio</p>
             </div>
-            <Button variant="premium" className="px-6">
+            <Button variant="premium" className="px-6" onClick={() => setCalcOpen(true)}>
               <Calculator className="w-4 h-4 mr-2" />
               Loan Calculator
             </Button>
@@ -211,10 +246,10 @@ const Loans = () => {
 
                     {/* Actions */}
                     <div className="flex flex-col space-y-2">
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" onClick={() => setPayOpen(loan)}>
                         Pay Extra
                       </Button>
-                      <Button size="sm" variant="ghost" className="text-xs">
+                      <Button size="sm" variant="ghost" className="text-xs" onClick={() => setDetailsOpen(loan)}>
                         View Details
                       </Button>
                     </div>
@@ -318,9 +353,159 @@ const Loans = () => {
         </div>
           </div>
         </main>
+        {/* Dialogs mounted at root to avoid layout shifts; they portal into body */}
+        <LoansDialogs
+          calcOpen={calcOpen}
+          setCalcOpen={setCalcOpen}
+          amount={amount}
+          setAmount={setAmount}
+          rate={rate}
+          setRate={setRate}
+          years={years}
+          setYears={setYears}
+          emi={emi}
+          payOpen={payOpen}
+          setPayOpen={setPayOpen}
+          detailsOpen={detailsOpen}
+          setDetailsOpen={setDetailsOpen}
+          lastPrepay={lastPrepay}
+          onPaid={(amt) => {
+            setLastPrepay(amt);
+            toast({ title: 'Payment submitted', description: `₹${amt.toLocaleString('en-IN')} applied as prepayment.` });
+          }}
+        />
       </div>
     </div>
   );
 };
+
+function Info({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="glass rounded-lg p-3">
+      <p className="text-xs text-muted-foreground">{label}</p>
+      <p className="font-semibold">{value}</p>
+    </div>
+  );
+}
+
+function PayForm({ onCancel, onSubmit, defaultAmt }: { onCancel: () => void; onSubmit: (amt: number) => void; defaultAmt?: number }) {
+  const [amt, setAmt] = useState<number>(defaultAmt ?? 50000);
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSubmit(amt);
+      }}
+      className="space-y-2.5"
+    >
+      <div className="space-y-2">
+        <Label htmlFor="pay-amt">Amount</Label>
+        <Input id="pay-amt" type="number" value={amt} onChange={(e) => setAmt(Number(e.target.value))} />
+        <p className="text-xs text-muted-foreground">This amount will be applied as principal prepayment.</p>
+      </div>
+      <DialogFooter className="gap-2 sm:gap-0 mt-1">
+        <Button type="button" variant="ghost" onClick={onCancel}>Cancel</Button>
+        <Button type="submit" variant="premium">Submit Payment</Button>
+      </DialogFooter>
+    </form>
+  );
+}
+
+function LoansDialogs({
+  calcOpen,
+  setCalcOpen,
+  amount,
+  setAmount,
+  rate,
+  setRate,
+  years,
+  setYears,
+  emi,
+  payOpen,
+  setPayOpen,
+  detailsOpen,
+  setDetailsOpen,
+  lastPrepay,
+  onPaid,
+}: {
+  calcOpen: boolean;
+  setCalcOpen: (v: boolean) => void;
+  amount: number; setAmount: (n: number) => void;
+  rate: number; setRate: (n: number) => void;
+  years: number; setYears: (n: number) => void;
+  emi: number;
+  payOpen: LoanItem | null; setPayOpen: (l: LoanItem | null) => void;
+  detailsOpen: LoanItem | null; setDetailsOpen: (l: LoanItem | null) => void;
+  lastPrepay: number | null;
+  onPaid: (amt: number) => void;
+}) {
+  return (
+    <>
+      {/* Calculator Dialog */}
+      <Dialog open={calcOpen} onOpenChange={setCalcOpen}>
+        <DialogContent className="sm:max-w-md w-[92vw] p-3">
+          <DialogHeader>
+            <DialogTitle>Loan Calculator</DialogTitle>
+          </DialogHeader>
+          <div className="grid sm:grid-cols-3 gap-2.5">
+            <div className="space-y-2">
+              <Label htmlFor="amt">Amount</Label>
+              <Input id="amt" type="number" value={amount} onChange={(e) => setAmount(Number(e.target.value))} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="rate">Interest % (p.a.)</Label>
+              <Input id="rate" type="number" step="0.1" value={rate} onChange={(e) => setRate(Number(e.target.value))} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="yrs">Tenure (years)</Label>
+              <Input id="yrs" type="number" value={years} onChange={(e) => setYears(Number(e.target.value))} />
+            </div>
+          </div>
+          <div className="mt-2.5 p-2.5 glass rounded-xl">
+            <p className="text-sm text-muted-foreground">Estimated Monthly EMI</p>
+            <p className="text-2xl font-bold">₹{Math.round(emi).toLocaleString('en-IN')}</p>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Pay Extra Dialog */}
+      <Dialog open={!!payOpen} onOpenChange={(o) => !o && setPayOpen(null)}>
+        <DialogContent className="sm:max-w-sm w-[92vw] p-3">
+          <DialogHeader>
+            <DialogTitle>Pay Extra {payOpen ? `- ${payOpen.type}` : ''}</DialogTitle>
+          </DialogHeader>
+          <PayForm
+            onCancel={() => setPayOpen(null)}
+            onSubmit={(amt) => { onPaid(amt); setPayOpen(null); }}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* View Details Dialog */}
+      <Dialog open={!!detailsOpen} onOpenChange={(o) => !o && setDetailsOpen(null)}>
+        <DialogContent className="sm:max-w-3xl w-[96vw] p-5">
+          <DialogHeader>
+            <DialogTitle>Loan Details {detailsOpen ? `- ${detailsOpen.type}` : ''}</DialogTitle>
+          </DialogHeader>
+          {detailsOpen && (
+            <div className="space-y-4">
+              <div className="grid sm:grid-cols-2 gap-4">
+                <Info label="Bank" value={detailsOpen.bank} />
+                <Info label="Principal" value={detailsOpen.principal} />
+                <Info label="Outstanding" value={detailsOpen.outstanding} />
+                <Info label="Monthly EMI" value={detailsOpen.emi} />
+                <Info label="Interest Rate" value={detailsOpen.rate} />
+                <Info label="Original Tenure" value={detailsOpen.tenure} />
+                <Info label="Remaining" value={detailsOpen.remaining} />
+                <Info label="Progress" value={`${detailsOpen.progress}%`} />
+                <Info label="Last Prepayment" value={lastPrepay ? `₹${lastPrepay.toLocaleString('en-IN')}` : '—'} />
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
 
 export default Loans;

@@ -10,6 +10,7 @@ import {
   ChevronRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useUser } from "@/context/UserContext";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/personal" },
@@ -22,12 +23,14 @@ const menuItems = [
 export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isOpen, setIsOpen] = useState(false); // mobile drawer
+  const { profile } = useUser();
 
   // Listen for header toggle on mobile
   useEffect(() => {
     const handler = () => setIsOpen((v) => !v);
-    window.addEventListener('toggle-sidebar' as any, handler as any);
-    return () => window.removeEventListener('toggle-sidebar' as any, handler as any);
+    const eventName = 'toggle-sidebar';
+    window.addEventListener(eventName, handler as EventListener);
+    return () => window.removeEventListener(eventName, handler as EventListener);
   }, []);
 
   const handleNavClick = () => {
@@ -43,12 +46,12 @@ export function Sidebar() {
       <div className={`${isCollapsed ? 'md:w-20' : 'md:w-64'} w-64 h-screen bg-card border-r border-border/50 transition-smooth flex flex-col fixed left-0 top-0 z-50 
       ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}>
         {/* Header */}
-        <div className="p-6 border-b border-border/50">
+        <div className={`${isCollapsed ? 'p-4' : 'p-6'} border-b border-border/50`}>
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <img src="/logo.jpg" alt="NovaFinance logo" className="h-8 w-8 rounded-lg object-cover" />
+            <div className={`flex items-center ${isCollapsed ? '' : 'space-x-2'}`}>
+              <img src="/logo.jpg" alt="FINEO logo" className={`${isCollapsed ? 'h-7 w-7' : 'h-8 w-8'} rounded-lg object-cover mx-auto`} />
               {!isCollapsed && (
-                <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text ">NovaFinance</span>
+                <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text">FINEO</span>
               )}
             </div>
             <Button
@@ -95,14 +98,26 @@ export function Sidebar() {
         </nav>
 
         {/* Footer */}
-        <div className="p-4 border-t border-border/50 space-y-3">
-          <div className="flex items-center space-x-3 px-4 py-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-premium flex items-center justify-center">
-              <span className="text-xs font-semibold text-white">JD</span>
-            </div>
+        <div className={`${isCollapsed ? 'p-3' : 'p-4'} border-t border-border/50 space-y-3` }>
+          <div className={`flex items-center ${isCollapsed ? 'justify-center px-0' : 'space-x-3 px-4'} py-2`}>
+            {profile.avatarUrl ? (
+              <img
+                src={profile.avatarUrl}
+                alt="Avatar"
+                className={`${isCollapsed ? 'w-7 h-7' : 'w-8 h-8'} rounded-full object-cover`}
+              />
+            ) : (
+              <div className={`${isCollapsed ? 'w-7 h-7' : 'w-8 h-8'} rounded-full bg-gradient-premium flex items-center justify-center`}>
+                <span className="text-[10px] font-semibold text-white">
+                  {`${(profile.firstName?.[0] || '').toUpperCase()}${(profile.lastName?.[0] || '').toUpperCase()}` || 'U'}
+                </span>
+              </div>
+            )}
             {!isCollapsed && (
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">John Doe</p>
+                <p className="text-sm font-medium text-foreground truncate">{
+                  [profile.firstName, profile.lastName].filter(Boolean).join(' ') || 'User'
+                }</p>
                 <p className="text-xs text-muted-foreground truncate">Premium Plan</p>
               </div>
             )}
@@ -110,11 +125,7 @@ export function Sidebar() {
           {/* Actions */}
           {!isCollapsed && (
             <div className="grid grid-cols-1 gap-2">
-              <Link to="/" onClick={handleNavClick}>
-                <Button variant="outline" className="w-full justify-center">
-                  Back to Home
-                </Button>
-              </Link>
+              
               <Link to="/login" onClick={handleNavClick}>
                 <Button variant="ghost" className="w-full justify-center text-destructive hover:text-destructive">
                   Logout
